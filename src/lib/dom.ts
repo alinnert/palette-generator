@@ -1,5 +1,5 @@
-import { generatePalettes } from './generatePalettes'
-import { settings, type Settings } from './main'
+import type { WritableAtom } from 'nanostores'
+import { outputPalettes } from '../outputPalettes'
 
 export const colorsElement = document.getElementById('colors')
 
@@ -9,12 +9,9 @@ function onInput(id: string, cb: (e: number) => void): void {
   })
 }
 
-export function syncInput(
-  elementId: string,
-  settingsProperty: keyof Settings,
-): void {
+export function syncValueInput(elementId: string, settingsAtom: WritableAtom<number>): void {
   onInput(elementId, (v) => {
-    settings[settingsProperty] = v
-    generatePalettes()
+    settingsAtom.set(v)
+    outputPalettes()
   })
 }

@@ -1,27 +1,11 @@
-import { syncInput } from './dom'
-import { generatePalettes } from './generatePalettes'
-import { inputValue } from './inputValue'
+import { cFactor, cwMixStrength, hCount, lCount } from './appSettings'
+import { outputPalettes } from './outputPalettes'
+import { syncValueInput } from './lib/dom'
 import './style.css'
 
-export const labelDigits = 2
+syncValueInput('l-count', lCount)
+syncValueInput('h-count', hCount)
+syncValueInput('c-factor', cFactor)
+syncValueInput('cw-mix-strength', cwMixStrength)
 
-export type Settings = {
-  lCount: number
-  hCount: number
-  cFactor: number
-  cwMixStrength: number
-}
-
-export const settings: Settings = {
-  lCount: inputValue('l-count'),
-  hCount: inputValue('h-count'),
-  cFactor: inputValue('c-factor'),
-  cwMixStrength: inputValue('cw-mix-strength'),
-}
-
-syncInput('l-count', 'lCount')
-syncInput('h-count', 'hCount')
-syncInput('c-factor', 'cFactor')
-syncInput('cw-mix-strength', 'cwMixStrength')
-
-generatePalettes()
+outputPalettes()

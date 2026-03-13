@@ -45,30 +45,67 @@ label {
 }
 
 .color {
+  --text-opacity: 0.4;
+
+  container-type: inline-size;
+  position: relative;
   aspect-ratio: 1 / 1;
   box-shadow: 0 0 0 1px hsl(0 0 100 / 0.25) inset;
-  background: var(--c);
-  padding: 4px;
+  background: var(--target-color);
   align-content: end;
   overflow: hidden;
   border-radius: 10%;
 
   .color-label {
+    position: absolute;
+    bottom: 5cqw;
+    right: 5cqw;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 900;
-    font-size: 8px;
+    font-size: 10cqw;
     text-align: right;
     color: contrast-color(var(--c));
-    opacity: 0.3;
+    opacity: var(--text-opacity);
   }
 
-  &:hover .color-label {
-    opacity: 0.8;
+  &:hover {
+    --text-opacity: 0.8;
+  }
+}
+
+.sub-color {
+  --gap: 5cqw;
+
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: var(--gap);
+  width: calc(50% - var(--gap) * 1.5);
+  aspect-ratio: 1 / 1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10cqw;
+  font-weight: 900;
+  box-shadow: 0 0 0 1px rgb(from white r g b / 0.2) inset;
+  border-radius: 20%;
+
+  &.base {
+    left: var(--gap);
+    background: var(--base-color);
+    color: rgb(from contrast-color(var(--base-color)) r g b / var(--text-opacity));
+  }
+
+  &.mix {
+    right: var(--gap);
+    background: var(--mix-color);
+    color: rgb(from contrast-color(var(--mix-color)) r g b / var(--text-opacity));
   }
 }
 
 .settings:has(#show-l:not(:checked)) ~ #colors .l-label,
 .settings:has(#show-c:not(:checked)) ~ #colors .c-label,
-.settings:has(#show-h:not(:checked)) ~ #colors .h-label {
+.settings:has(#show-h:not(:checked)) ~ #colors .h-label,
+.settings:has(#show-base-color:not(:checked)) ~ #colors .sub-color.base,
+.settings:has(#show-mix-color:not(:checked)) ~ #colors .sub-color.mix {
   display: none;
 }
