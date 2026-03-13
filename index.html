@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>palette-generator</title>
+  </head>
+  <body>
+    <div class="settings">
+      <label for="l-count">
+        <input
+          type="number"
+          id="l-count"
+          min="3"
+          max="100"
+          step="1"
+          value="10"
+        />
+        <span>Lightnesses</span>
+      </label>
+
+      <label for="h-count">
+        <input
+          type="number"
+          id="h-count"
+          min="1"
+          max="360"
+          step="1"
+          value="10"
+        />
+        <span>Hues</span>
+      </label>
+
+      <label for="c-factor">
+        <input
+          type="number"
+          id="c-factor"
+          min="0"
+          max="2"
+          step="0.05"
+          value="1"
+        />
+        <span>Chroma factor</span>
+      </label>
+
+      <label for="show-l">
+        <input type="checkbox" id="show-l" />
+        <span>Show lightness</span>
+      </label>
+
+      <label for="show-c">
+        <input type="checkbox" id="show-c" />
+        <span>Show chroma</span>
+      </label>
+
+      <label for="show-h">
+        <input type="checkbox" id="show-h" />
+        <span>Show hue</span>
+      </label>
+
+      <label for="cw-mix-strength">
+        <input
+          type="number"
+          id="cw-mix-strength"
+          min="0"
+          max="100"
+          step="5"
+          value="50"
+        />
+        <span>% cool/warm mix</span>
+      </label>
+    </div>
+
+    <div id="colors"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

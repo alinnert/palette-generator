@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  background: light-dark(hsl(0 0 65%), hsl(0 0 40%));
+  color: light-dark(black, white);
+  color-scheme: light dark;
+}
+
+#colors {
+  display: grid;
+  gap: 2px;
+  padding: 2px;
+}
+
+.settings {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: column;
+  gap: 2px;
+  padding: 10px 2px;
+
+  input {
+    margin-inline: 10px;
+    padding-inline: 0;
+    box-sizing: border-box;
+    vertical-align: middle;
+
+    &[type='number'] {
+      width: 60px;
+    }
+  }
+
+  span {
+    vertical-align: middle;
+  }
+}
+
+label {
+  display: block;
+  padding: 2px 4px;
+  user-select: none;
+
+  &:has(input[type='checkbox']):hover {
+    background: rgb(from white r g b / 0.2);
+  }
+}
+
+.color {
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 0 0 1px hsl(0 0 100 / 0.25) inset;
+  background: var(--c);
+  padding: 4px;
+  align-content: end;
+  overflow: hidden;
+  border-radius: 10%;
+
+  .color-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 900;
+    font-size: 8px;
+    text-align: right;
+    color: contrast-color(var(--c));
+    opacity: 0.3;
+  }
+
+  &:hover .color-label {
+    opacity: 0.8;
+  }
+}
+
+.settings:has(#show-l:not(:checked)) ~ #colors .l-label,
+.settings:has(#show-c:not(:checked)) ~ #colors .c-label,
+.settings:has(#show-h:not(:checked)) ~ #colors .h-label {
+  display: none;
+}
