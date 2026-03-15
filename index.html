@@ -28,6 +28,19 @@
           <span>Use dynamic chroma</span>
         </label>
 
+        <details>
+          <summary>What is dynamic chroma?</summary>
+          <p>
+            When enabled the base chroma gets determined automatically and individually for each
+            hue. Every color uses its biggest possible chroma value (at the lightness value set at
+            "Max chroma at lightness").
+          </p>
+          <p>
+            When enabled "Static chroma value" has no effect. Using this is usually not recommended
+            since it gives all hues an uneven saturation.
+          </p>
+        </details>
+
         <label for="static-chroma">
           <input type="number" id="static-chroma" min="0" max="2" step="0.01" />
           <span>Static chroma value</span>
@@ -37,21 +50,6 @@
           <input type="number" id="max-chroma-at-lightness" min="0" max="1" step="0.02" />
           <span>Max chroma at lightness</span>
         </label>
-
-        <details>
-          <summary>What is Chroma factor?</summary>
-          <p>
-            The <strong>Chroma factor</strong> decreases or increases the overall saturation of
-            colors. The base chroma value is "<code data-value="base-chroma">?</code>".
-          </p>
-
-          <p>
-            "<code>1</code>" is the calculated maximum safe chroma value.<br />
-            "<code>0</code>" is grayscale.<br />
-            The value can be increase to up to "<code>2</code>". But for most hues this looks way
-            oversaturated.
-          </p>
-        </details>
 
         <h2>Dynamic Hue Shift</h2>
 
@@ -68,8 +66,9 @@
         <details>
           <summary>What is bright colors mix hue?</summary>
           <p>
-            Brighter colors get shifted towards this hue. The brighter the color the stronger the
-            shift towards this hue. For warmer shifts this value should be around "<code>80</code>".
+            Brighter colors (lightness > 0.5) get shifted towards this hue. The brighter the color
+            the stronger the shift towards this hue. For warmer shifts this value should be around
+            "<code>80</code>".
           </p>
         </details>
 
@@ -86,8 +85,9 @@
         <details>
           <summary>What is dark colors mix hue?</summary>
           <p>
-            Darker colors get shifted towards this hue. The darker the color the stronger the shift
-            towards this hue. For colder shifts this value should be around "<code>260</code>".
+            Darker colors (lightness < 0.5) get shifted towards this hue. The darker the color the
+            stronger the shift towards this hue. For colder shifts this value should be around
+            "<code>260</code>".
           </p>
         </details>
 
@@ -156,49 +156,6 @@
           This is a playground where I test if it's possible to generate automatic color palettes
           using the OKLCH color space and some calculations on top of it.
         </p>
-
-        <p>
-          At the moment, palettes cannot be created in a form that's usable in CSS or other
-          software. That's because the CSS function <code>color-mix()</code> is used to generate the
-          final individual colors.
-        </p>
-
-        <p>
-          The goal is to wait if and when the CSS proposals <code>@function</code> and
-          <code>@mixin</code> get finalized and implemented by browsers. If that's the case entire
-          palettes can be configured and generated inside of CSS.
-        </p>
-
-        <details>
-          <summary>How do colors for a hue get generated?</summary>
-
-          <p>
-            I start with a <strong>hue</strong> value. I then have a function that turns a base
-            <strong>chroma</strong> value (which is "<code data-value="base-chroma">?</code>") into
-            one that depends on an individual <strong>lightness</strong> value. That means for
-            lightnesses "<code>0</code>" and "<code>1</code>" it gives me a
-            <strong>chroma</strong> value of "<code>0</code>". For the
-            <strong>lightness</strong> value "<code data-value="l-peak">?</code>" it gives me the
-            <strong>chroma</strong> value "<code>1</code>". Everything in between gets interpolated
-            linearly.
-          </p>
-
-          <p>
-            <i>
-              I've also experimented with using this value ("<code data-value="l-peak">?</code>") to
-              generate the max chroma for each individual hue at this
-              <strong>lightness</strong> value. That would result in more saturated colors for hues
-              that support it. But I wasn't satisfied with how it turned out. It results in mostly
-              very saturated <strong>pinks</strong>, but <strong>not yellows</strong>, because
-              yellow is most saturated at a very high <strong>lightness</strong> value. That would
-              require much more complex formulas. In addition to that I need to apply those chroma
-              variations in moderation. Otherwise I guess the palettes look more like they are based
-              on the <code>HSL</code> color space, which is not my goal.
-            </i>
-          </p>
-
-          <p>Anyway, I multiply that</p>
-        </details>
 
         <p>
           Source on GitHub:
