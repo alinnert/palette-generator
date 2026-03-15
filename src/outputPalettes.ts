@@ -1,4 +1,4 @@
-import { formatCss, formatHex, interpolate } from 'culori'
+import { converter, formatCss, formatHex, interpolate } from 'culori'
 import {
   brightMixHue,
   brightMixStrength,
@@ -12,6 +12,9 @@ import { colorsElement } from './lib/dom'
 import { formatColor } from './lib/formatColor'
 import { getBaseC } from './lib/getBaseC'
 import { getSwatchForHueAndLightness } from './lib/getSwatchForHueAndLightness'
+
+const toOklab = converter('oklab')
+const toOklch = converter('oklch')
 
 export function outputPalettes(): void {
   if (colorsElement === null) return
@@ -33,7 +36,10 @@ export function outputPalettes(): void {
       const mixStrength = color.l > 0.5 ? brightMixStrength.get() : darkMixStrength.get()
       const finalMixColorStrength = lightnessRelativeMixColorStrength * 100 * (mixStrength / 100)
       const mixColorStrengthString = finalMixColorStrength.toFixed(1)
-      const finalColor = interpolate([color, mixColor], 'oklch')(finalMixColorStrength / 100)
+
+      const finalColor = toOklch(
+        interpolate([toOklab(color), toOklab(mixColor)], 'oklab')(finalMixColorStrength / 100),
+      )
 
       const html = document.createElement('div')
       html.classList.add('color')
