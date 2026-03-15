@@ -1,32 +1,109 @@
 body {
+  font-family: Inter, sans-serif;
   margin: 0;
   background: light-dark(hsl(0 0 65%), hsl(0 0 40%));
   color: light-dark(black, white);
+  font-size: 16px;
   color-scheme: light dark;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  overflow: hidden;
 }
 
 #colors {
   display: grid;
+  grid-auto-rows: max-content;
   gap: 2px;
-  padding: 2px;
+  padding: 10px;
+  overflow: auto;
 }
 
 .settings {
-  display: grid;
-  grid-template-rows: repeat(3, auto);
-  grid-auto-flow: column;
+  display: flex;
+  flex-direction: column;
   gap: 2px;
-  padding: 10px 2px;
+  padding: 10px 10px;
+  overflow: auto;
+
+  h1 {
+    --gradient-stop: oklch(0.5 0.14 0);
+
+    @media (prefers-color-scheme: dark) {
+      --gradient-stop: oklch(0.75 0.18 0);
+    }
+
+    margin: 0;
+    background: linear-gradient(
+      to right in oklch longer hue,
+      var(--gradient-stop),
+      var(--gradient-stop)
+    );
+    color: transparent;
+    background-clip: text;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+
+  h2 + * {
+    margin-top: 0 !important;
+  }
+
+  p {
+    font-weight: 500;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    opacity: 0.6;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  details {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding-block: 5px;
+    padding-inline: 10px;
+    background: rgb(from white r g b / 0.2);
+    border-radius: 10px;
+
+    @media (prefers-color-scheme: dark) {
+      background: rgb(from black r g b / 0.2);
+    }
+
+    summary {
+      font-size: 15px;
+      font-weight: 500;
+      user-select: none;
+    }
+
+    summary + * {
+      margin-top: 10px;
+    }
+
+    :last-child {
+      margin-bottom: 0;
+    }
+  }
 
   input {
-    margin-inline: 10px;
+    margin-left: 0;
+    margin-right: 10px;
     padding-inline: 0;
     box-sizing: border-box;
     vertical-align: middle;
-
-    &[type='number'] {
-      width: 60px;
-    }
+    width: 60px;
   }
 
   span {
@@ -51,7 +128,7 @@ label {
   position: relative;
   aspect-ratio: 1 / 1;
   box-shadow: 0 0 0 1px hsl(0 0 100 / 0.25) inset;
-  background: var(--target-color);
+  background: var(--final-color);
   align-content: end;
   overflow: hidden;
   border-radius: 10%;
@@ -64,7 +141,7 @@ label {
     font-weight: 900;
     font-size: 10cqw;
     text-align: right;
-    color: contrast-color(var(--c));
+    color: contrast-color(var(--final-color));
     opacity: var(--text-opacity);
   }
 
@@ -82,12 +159,12 @@ label {
   position: absolute;
   top: var(--gap);
   width: calc(50% - var(--gap) * 1.5);
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 2;
   font-family: 'JetBrains Mono', monospace;
   font-size: 10cqw;
   font-weight: 900;
   box-shadow: 0 0 0 1px rgb(from white r g b / 0.2) inset;
-  border-radius: 20%;
+  border-radius: 6cqw;
 
   &.base {
     left: var(--gap);
@@ -102,9 +179,10 @@ label {
   }
 }
 
-.settings:has(#show-l:not(:checked)) ~ #colors .l-label,
-.settings:has(#show-c:not(:checked)) ~ #colors .c-label,
-.settings:has(#show-h:not(:checked)) ~ #colors .h-label,
+.settings:has(#show-lightness:not(:checked)) ~ #colors .l-label,
+.settings:has(#show-chroma:not(:checked)) ~ #colors .c-label,
+.settings:has(#show-hue:not(:checked)) ~ #colors .h-label,
+.settings:has(#show-hex:not(:checked)) ~ #colors .hex-label,
 .settings:has(#show-base-color:not(:checked)) ~ #colors .sub-color.base,
 .settings:has(#show-mix-color:not(:checked)) ~ #colors .sub-color.mix {
   display: none;

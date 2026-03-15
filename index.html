@@ -4,57 +4,211 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>palette-generator</title>
+    <title>Palette Generator</title>
   </head>
   <body>
-    <div class="settings">
-      <label for="l-count">
-        <input type="number" id="l-count" min="3" max="100" step="1" value="10" />
-        <span>Lightnesses</span>
-      </label>
+    <div id="app">
+      <div class="settings">
+        <h1>Palette Generator</h1>
 
-      <label for="h-count">
-        <input type="number" id="h-count" min="1" max="360" step="1" value="10" />
-        <span>Hues</span>
-      </label>
+        <h2>Palette Settings</h2>
 
-      <label for="c-factor">
-        <input type="number" id="c-factor" min="0" max="2" step="0.05" value="1" />
-        <span>Chroma factor</span>
-      </label>
+        <label for="lightness-swatches-count">
+          <input type="number" id="lightness-swatches-count" min="3" max="100" step="1" />
+          <span>Lightnesses</span>
+        </label>
 
-      <label for="show-l">
-        <input type="checkbox" id="show-l" />
-        <span>Show base lightness</span>
-      </label>
+        <label for="hue-swatches-count">
+          <input type="number" id="hue-swatches-count" min="1" max="360" step="1" />
+          <span>Hues</span>
+        </label>
 
-      <label for="show-c">
-        <input type="checkbox" id="show-c" />
-        <span>Show base chroma</span>
-      </label>
+        <label for="use-dynamic-chroma">
+          <input type="checkbox" id="use-dynamic-chroma" />
+          <span>Use dynamic chroma</span>
+        </label>
 
-      <label for="show-h">
-        <input type="checkbox" id="show-h" />
-        <span>Show base hue</span>
-      </label>
+        <label for="static-chroma">
+          <input type="number" id="static-chroma" min="0" max="2" step="0.01" />
+          <span>Static chroma value</span>
+        </label>
 
-      <label for="cw-mix-strength">
-        <input type="number" id="cw-mix-strength" min="0" max="100" step="5" value="50" />
-        <span>% cool/warm mix</span>
-      </label>
+        <label for="max-chroma-at-lightness">
+          <input type="number" id="max-chroma-at-lightness" min="0" max="1" step="0.02" />
+          <span>Max chroma at lightness</span>
+        </label>
 
-      <label for="show-base-color">
-        <input type="checkbox" id="show-base-color" checked />
-        <span>Show base color</span>
-      </label>
+        <details>
+          <summary>What is Chroma factor?</summary>
+          <p>
+            The <strong>Chroma factor</strong> decreases or increases the overall saturation of
+            colors. The base chroma value is "<code data-value="base-chroma">?</code>".
+          </p>
 
-      <label for="show-mix-color">
-        <input type="checkbox" id="show-mix-color" checked />
-        <span>Show mix color</span>
-      </label>
+          <p>
+            "<code>1</code>" is the calculated maximum safe chroma value.<br />
+            "<code>0</code>" is grayscale.<br />
+            The value can be increase to up to "<code>2</code>". But for most hues this looks way
+            oversaturated.
+          </p>
+        </details>
+
+        <h2>Dynamic Hue Shift</h2>
+
+        <label for="bright-mix-strength">
+          <input type="number" id="bright-mix-strength" min="0" max="100" step="1" />
+          <span>Bright colors mix strength</span>
+        </label>
+
+        <label for="bright-mix-hue">
+          <input type="number" id="bright-mix-hue" min="0" max="360" step="1" />
+          <span>Bright colors mix hue</span>
+        </label>
+
+        <details>
+          <summary>What is bright colors mix hue?</summary>
+          <p>
+            Brighter colors get shifted towards this hue. The brighter the color the stronger the
+            shift towards this hue. For warmer shifts this value should be around "<code>80</code>".
+          </p>
+        </details>
+
+        <label for="dark-mix-strength">
+          <input type="number" id="dark-mix-strength" min="0" max="100" step="1" />
+          <span>Dark colors mix strength</span>
+        </label>
+
+        <label for="dark-mix-hue">
+          <input type="number" id="dark-mix-hue" min="0" max="360" step="1" />
+          <span>Dark colors mix hue</span>
+        </label>
+
+        <details>
+          <summary>What is dark colors mix hue?</summary>
+          <p>
+            Darker colors get shifted towards this hue. The darker the color the stronger the shift
+            towards this hue. For colder shifts this value should be around "<code>260</code>".
+          </p>
+        </details>
+
+        <label for="show-base-color">
+          <input type="checkbox" id="show-base-color" />
+          <span>Show base color</span>
+        </label>
+
+        <label for="show-mix-color">
+          <input type="checkbox" id="show-mix-color" />
+          <span>Show mix color</span>
+        </label>
+
+        <h2>Show Base Color Values</h2>
+
+        <details>
+          <summary>What are base color values?</summary>
+          <p>
+            These values represent the <strong>lightness</strong>, <strong>chroma</strong>, and
+            <strong>hue</strong> values of the <strong>base color</strong>. That's the color
+            <strong>before</strong> Dynamic Hue Shift gets applied.
+          </p>
+          <p>
+            Currently, final colors get generated using the CSS function <code>color-mix()</code>.
+            AFAIK I cannot extract those values from colors generated using that function.<br />
+            (See "About" section)
+          </p>
+        </details>
+
+        <label for="show-lightness">
+          <input type="checkbox" id="show-lightness" />
+          <span>Show lightness</span>
+        </label>
+
+        <label for="show-chroma">
+          <input type="checkbox" id="show-chroma" />
+          <span>Show chroma</span>
+        </label>
+
+        <label for="show-hue">
+          <input type="checkbox" id="show-hue" />
+          <span>Show hue</span>
+        </label>
+
+        <label for="show-hex">
+          <input type="checkbox" id="show-hex" />
+          <span>Show hex</span>
+        </label>
+
+        <h2>Other Settings</h2>
+
+        <label for="copy-to-clipboard-format">
+          <select id="copy-to-clipboard-format">
+            <option value="hex">Hex</option>
+            <option value="hex-raw">Hex (without #)</option>
+            <option value="oklch">OKLCH</option>
+            <option value="hsl">HSL</option>
+            <option value="rgb">RGB</option>
+          </select>
+          <span>Copy format</span>
+        </label>
+
+        <h2>About</h2>
+
+        <p>
+          This is a playground where I test if it's possible to generate automatic color palettes
+          using the OKLCH color space and some calculations on top of it.
+        </p>
+
+        <p>
+          At the moment, palettes cannot be created in a form that's usable in CSS or other
+          software. That's because the CSS function <code>color-mix()</code> is used to generate the
+          final individual colors.
+        </p>
+
+        <p>
+          The goal is to wait if and when the CSS proposals <code>@function</code> and
+          <code>@mixin</code> get finalized and implemented by browsers. If that's the case entire
+          palettes can be configured and generated inside of CSS.
+        </p>
+
+        <details>
+          <summary>How do colors for a hue get generated?</summary>
+
+          <p>
+            I start with a <strong>hue</strong> value. I then have a function that turns a base
+            <strong>chroma</strong> value (which is "<code data-value="base-chroma">?</code>") into
+            one that depends on an individual <strong>lightness</strong> value. That means for
+            lightnesses "<code>0</code>" and "<code>1</code>" it gives me a
+            <strong>chroma</strong> value of "<code>0</code>". For the
+            <strong>lightness</strong> value "<code data-value="l-peak">?</code>" it gives me the
+            <strong>chroma</strong> value "<code>1</code>". Everything in between gets interpolated
+            linearly.
+          </p>
+
+          <p>
+            <i>
+              I've also experimented with using this value ("<code data-value="l-peak">?</code>") to
+              generate the max chroma for each individual hue at this
+              <strong>lightness</strong> value. That would result in more saturated colors for hues
+              that support it. But I wasn't satisfied with how it turned out. It results in mostly
+              very saturated <strong>pinks</strong>, but <strong>not yellows</strong>, because
+              yellow is most saturated at a very high <strong>lightness</strong> value. That would
+              require much more complex formulas. In addition to that I need to apply those chroma
+              variations in moderation. Otherwise I guess the palettes look more like they are based
+              on the <code>HSL</code> color space, which is not my goal.
+            </i>
+          </p>
+
+          <p>Anyway, I multiply that</p>
+        </details>
+
+        <p>
+          Source on GitHub:
+          <a href="https://github.com/alinnert/palette-generator">alinnert/palette-generator</a>
+        </p>
+      </div>
+
+      <div id="colors"></div>
     </div>
 
-    <div id="colors"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
